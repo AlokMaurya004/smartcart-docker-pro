@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartCart Pro | Secure Docker E-Commerce</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <div class="logo">S</div>
+      <div>
+        <h2>SmartCart Pro</h2>
+        <span>JWT Auth • Payments • Tracking • Docker</span>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button class="ghost-btn" onclick="loadEverything()">Refresh</button>
+      <button id="loginBtn" onclick="openAuth('login')">Login</button>
+      <button id="registerBtn" onclick="openAuth('register')">Register</button>
+      <div id="userBox" class="user-box hidden"></div>
+      <button id="logoutBtn" class="danger hidden" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>E-Commerce Dashboard</h1>
+      <p class="hero-text">Login, register, pay with demo UPI/Card/COD and track orders with live status timeline using JWT authentication, Node.js, MongoDB, Docker Compose and Nginx reverse proxy.</p>
+      <div class="hero-links">
+        <a href="#products">Explore Products</a>
+        <a href="#dashboard">View Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="dashboard" class="stats-grid">
+      <div class="stat-card"><span>Total Products</span><strong id="totalProducts">-</strong></div>
+      <div class="stat-card"><span>Total Orders</span><strong id="totalOrders">-</strong></div>
+      <div class="stat-card"><span>Total Revenue</span><strong id="totalRevenue">-</strong></div>
+      <div class="stat-card"><span>Total Stock</span><strong id="totalStock">-</strong></div>
+    </section>
+
+    <section class="admin-panel hidden" id="adminPanel">
+      <div class="section-heading">
+        <p>Admin Panel</p>
+        <h2>Add New Product</h2>
+      </div>
+      <form id="productForm" class="product-form">
+        <input id="pName" placeholder="Product name" required />
+        <input id="pCategory" placeholder="Category" required />
+        <input id="pPrice" type="number" placeholder="Price" required />
+        <input id="pStock" type="number" placeholder="Stock" value="10" />
+        <input id="pImage" placeholder="Image URL" />
+        <button type="submit">Add Product</button>
+      </form>
+    </section>
+
+    <section id="products" class="section">
+      <div class="section-heading">
+        <p>Product Store</p>
+        <h2>Featured Products</h2>
+        <span>Login first, then click Pay & Buy to complete a demo payment and create an order.</span>
+      </div>
+      <div id="productGrid" class="product-grid"></div>
+    </section>
+
+    <section class="section orders-section">
+      <div class="section-heading">
+        <p>Orders</p>
+        <h2>Recent Orders & Tracking</h2>
+        <span>Customers can track their own orders. Admin can update delivery status.</span>
+      </div>
+      <div id="ordersList" class="orders-list"></div>
+    </section>
+  </main>
+
+  <div id="authModal" class="modal hidden">
+    <div class="modal-card">
+      <button class="close" onclick="closeAuth()">×</button>
+      <h2 id="authTitle">Login</h2>
+      <p id="authSubtitle">Access your SmartCart account</p>
+      <form id="authForm">
+        <input id="nameInput" class="hidden" placeholder="Full name" />
+        <input id="emailInput" type="email" placeholder="Email" required />
+        <input id="passwordInput" type="password" placeholder="Password" required />
+        <button type="submit" id="authSubmit">Login</button>
+      </form>
+      <p id="authMessage" class="message"></p>
+    </div>
+  </div>
+
+
+  <div id="paymentModal" class="modal hidden">
+    <div class="modal-card payment-card">
+      <button class="close" onclick="closePayment()">×</button>
+      <h2>Checkout</h2>
+      <p id="paymentTitle">Payment</p>
+      <div class="payment-summary">
+        <span>Amount Payable</span>
+        <strong id="paymentAmount">₹0</strong>
+      </div>
+      <form id="paymentForm">
+        <label>Payment Method</label>
+        <select id="paymentMethod">
+          <option value="UPI">UPI</option>
+          <option value="CARD">Debit/Credit Card</option>
+          <option value="COD">Cash on Delivery</option>
+        </select>
+
+        <div id="upiBox">
+          <label>Demo UPI ID</label>
+          <input id="upiId" placeholder="example@upi" />
+        </div>
+
+        <div id="cardBox" class="hidden">
+          <label>Demo Card Number</label>
+          <input id="cardNumber" placeholder="xxxx xxxx xxxx xxxx" />
+        </div>
+
+        <button type="submit">Confirm Payment</button>
+      </form>
+      <p id="paymentNote" class="hint"></p>
+      <p id="paymentMessage" class="message"></p>
+    </div>
+  </div>
+
+  <footer>
+    Designed by <span>Alok Maurya</span> 
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
