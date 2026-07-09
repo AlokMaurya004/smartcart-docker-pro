@@ -1,3 +1,4 @@
+const API_BASE = "https://smartcart-backend-2rcq.onrender.com";
 const productGrid = document.getElementById("productGrid");
 const ordersList = document.getElementById("ordersList");
 const healthOutput = document.getElementById("healthOutput");
@@ -61,7 +62,10 @@ async function fetchJson(url, options = {}) {
   if (token) headers.Authorization = `Bearer ${token}`;
   if (options.body) headers["Content-Type"] = "application/json";
 
-  const response = await fetch(url, { ...options, headers });
+  const response = await fetch(`${API_BASE}${url}`, {
+  ...options,
+  headers
+});
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     if (response.status === 401 && !url.includes("/api/auth/login") && !url.includes("/api/auth/register")) {
