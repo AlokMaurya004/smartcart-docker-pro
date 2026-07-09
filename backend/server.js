@@ -8,7 +8,7 @@ const os = require("os");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const MONGO_URL = process.env.MONGO_URL || "mongodb://mongo:27017/smartcart";
+const MONGO_URL = process.env.MONGO_URL;
 const JWT_SECRET = process.env.JWT_SECRET || "change-this-secret-in-production";
 
 app.use(cors());
