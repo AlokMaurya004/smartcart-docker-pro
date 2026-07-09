@@ -6,6 +6,10 @@ const totalProducts = document.getElementById("totalProducts");
 const totalOrders = document.getElementById("totalOrders");
 const totalRevenue = document.getElementById("totalRevenue");
 const totalStock = document.getElementById("totalStock");
+const productsLabel = document.getElementById("productsLabel");
+const ordersLabel = document.getElementById("ordersLabel");
+const moneyLabel = document.getElementById("moneyLabel");
+const fourthLabel = document.getElementById("fourthLabel");
 const loginBtn = document.getElementById("loginBtn");
 const registerBtn = document.getElementById("registerBtn");
 const logoutBtn = document.getElementById("logoutBtn");
@@ -356,11 +360,58 @@ async function loadOrders() {
 
 async function loadAnalytics() {
   try {
-    const data = await fetchJson("/api/analytics");
-    totalProducts.textContent = data.stats.totalProducts;
-    totalOrders.textContent = data.stats.totalOrders;
-    totalRevenue.textContent = formatCurrency(data.stats.totalRevenue);
-    totalStock.textContent = data.stats.totalStock;
+    // ADMIN DASHBOARD
+    if (currentUser?.role === "admin") {
+      productsLabel.textContent = "Total Products";
+      ordersLabel.textContent = "Total Orders";
+      moneyLabel.textContent = "Total Revenue";
+      fourthLabel.textContent = "Total Stock";
+
+      const data = await fetchJson("/api/analytics");
+
+      totalProducts.textContent = data.stats.totalProducts;
+      totalOrders.textContent = data.stats.totalOrders;
+      totalRevenue.textContent = formatCurrency(data.stats.totalRevenue);
+      totalStock.textContent = data.stats.totalStock;
+      return;
+    }
+
+    // CUSTOMER DASHBOARD
+    if (currentUser?.role === "customer") {
+      productsLabel.textContent = "Available Products";
+      ordersLabel.textContent = "My Orders";
+      moneyLabel.textContent = "Total Cart Value";
+      fourthLabel.textContent = "My Payments";
+
+      const [productsData, ordersData, paymentsData] = await Promise.all([
+        fetchJson("/api/products"),
+        fetchJson("/api/orders"),
+        fetchJson("/api/payments")
+      ]);
+
+      const myOrders = ordersData.orders || [];
+      const myPayments = paymentsData.payments || [];
+      const myCartValue = myOrders.reduce((sum, order) => sum + (Number(order.total) || 0), 0);
+
+      totalProducts.textContent = productsData.total || productsData.products?.length || 0;
+      totalOrders.textContent = myOrders.length;
+      totalRevenue.textContent = formatCurrency(myCartValue);
+      totalStock.textContent = myPayments.length;
+      return;
+    }
+
+    // GUEST DASHBOARD
+    productsLabel.textContent = "Available Products";
+    ordersLabel.textContent = "My Orders";
+    moneyLabel.textContent = "Total Cart Value";
+    fourthLabel.textContent = "My Payments";
+
+    const productsData = await fetchJson("/api/products");
+
+    totalProducts.textContent = productsData.total || productsData.products?.length || 0;
+    totalOrders.textContent = "-";
+    totalRevenue.textContent = "-";
+    totalStock.textContent = "-";
   } catch (_) {
     totalProducts.textContent = "-";
     totalOrders.textContent = "-";
