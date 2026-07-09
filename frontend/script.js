@@ -1,4 +1,4 @@
-const API_BASE = "https://smartcart-backend-dqi2.onrender.com";
+const API_BASE = "https://smartcart-backend-60rr.onrender.com";
 const productGrid = document.getElementById("productGrid");
 const ordersList = document.getElementById("ordersList");
 const healthOutput = document.getElementById("healthOutput");
